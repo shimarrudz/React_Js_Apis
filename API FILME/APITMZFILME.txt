@@ -1,0 +1,57 @@
+############################################################################################################################################################################################
+-services
+	-apiTMZ.js =
+
+import axios from 'axios';
+
+
+const apiTmz = axios.create({
+
+    baseURL: 'https://api.tvmaze.com/search/shows?q='
+
+});
+
+s
+export default apiTmz;
+API TMZ
+############################################################################################################################################################################################
+-paginas
+	-tmz
+		-index.js = 
+import react from 'react';			     
+import apiTMZ from '../../services/apiTmz';
+import { Component } from 'react';
+
+
+#Extensão de componente como class invés de usar como função
+
+class App extends Component{
+	state={
+		fimes:[],
+	}
+	async componentDidMount(){
+		cont response = await apiTMZ.get('batman');
+		console.log.response.data;
+
+
+		this.setState({filmes:response.data})
+	}
+
+	render(){
+		const {filme} = this.state;
+
+		return(
+			<div>
+			<h1> Pagina de Filmes</h1>
+				
+			{filmes.map(filme =>(
+				<li key={filme.show.id}>
+					<h2><strong> Título </strong> {filme.show.name} </h2>
+					<p> Tipo: {filme.show.type} </p>
+			)}
+
+			</div>
+		)
+
+}
+export default AppTmz

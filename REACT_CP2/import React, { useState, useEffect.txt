@@ -1,0 +1,66 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
+const API_URL = 'https://api.github.com';
+const API_KEY = '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';
+
+function App() {
+  const [userData, setUserData] = useState(null);
+  const [repos, setRepos] = useState([]);
+
+  useEffect(() => {
+    // Obter informações do usuário
+    axios.get(`${API_URL}/users/shimarrudz`, {
+      headers: {
+        Authorization: `Bearer ${API_KEY}`,
+      },
+    })
+      .then(response => {
+        setUserData(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+    // Obter lista de repositórios do usuário
+    axios.get(`${API_URL}/users/shimarrudz/repos`, {
+      headers: {
+        Authorization: `Bearer ${API_KEY}`,
+      },
+    })
+      .then(response => {
+        setRepos(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }, []);
+
+  return (
+    <div>
+      {userData && (
+        <div>
+          <h1> Git username:</h1>
+          <h4>{userData.login}</h4>
+          <h1> Profile photo:</h1>
+          <img src={userData.avatar_url} alt={userData.login} />
+        </div>
+      )}
+
+      <h1> Repositórios:</h1>
+      {repos.map(repo => (
+        <div key={repo.id}>
+          <h3>{repo.name}</h3>
+          <p>{repo.description}</p>
+          <a href={repo.html_url}>View on GitHub</a>
+        </div>
+      ))}
+
+      {repos.length === 0 && (
+        <p>Nenhum repositório encontrado.</p>
+      )}
+    </div>
+  );
+}
+
+export default App;
